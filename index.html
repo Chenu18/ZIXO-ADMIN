@@ -1,0 +1,1254 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#100d0e">
+<title>ZIXO ADMIN</title>
+<link rel="manifest" href="./manifest.json">
+<link rel="icon" href="./icon.svg" type="image/svg+xml">
+
+<style>
+:root{
+--bg:#100d0e;--panel:#1d171a;--panel2:#281e22;
+--red:#d92e38;--gold:#e6b84a;--text:#fff7ed;
+--muted:#b5a5a8;--border:#443238;--green:#45c58a;
+}
+*{box-sizing:border-box}
+body{
+margin:0;background:linear-gradient(#100d0eeF,#100d0ef5),url("./assets/zixo-art.jpg") center/cover fixed;
+color:var(--text);font-family:Arial,sans-serif;min-height:100vh
+}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+.app{max-width:1200px;margin:auto;padding:16px}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:20px}
+.brand{display:flex;align-items:center;gap:12px}
+.logo{width:52px;height:52px;object-fit:cover;border-radius:13px;border:1px solid var(--gold)}
+h1{font-size:23px;letter-spacing:2px;margin:0}
+.sub{font-size:11px;color:var(--muted);margin-top:5px}
+.header-actions{display:flex;gap:8px;flex-wrap:wrap}
+.btn{border:1px solid var(--border);border-radius:10px;padding:10px 13px;background:var(--panel2);color:var(--text);font-weight:700}
+.primary{background:var(--red);border-color:var(--red);color:white}
+.gold{background:var(--gold);border-color:var(--gold);color:#21170a}
+.green{color:var(--green)}
+.redText{color:#ff737d}
+.dashboard{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:18px}
+.stat{background:#1b1518ed;border:1px solid var(--border);border-radius:14px;padding:15px}
+.stat small{display:block;color:var(--muted);margin-bottom:9px}
+.stat strong{font-size:21px;color:var(--gold);overflow-wrap:anywhere}
+nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.navbtn{background:var(--panel);border:1px solid var(--border);color:var(--muted);padding:11px 14px;border-radius:10px;font-weight:700}
+.navbtn.active{background:var(--red);color:white;border-color:var(--red)}
+.section{background:#171214ed;border:1px solid var(--border);padding:17px;border-radius:15px;margin-bottom:16px}
+.hidden{display:none!important}
+.heading{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:15px}
+h2{font-size:19px;margin:0}
+h3{font-size:15px;margin:0 0 12px}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:15px}
+input,select,textarea{width:100%;padding:12px;border-radius:9px;background:#100d0e;color:var(--text);border:1px solid var(--border);outline:none}
+input:focus,select:focus,textarea:focus{border-color:var(--gold)}
+.toolbar input{flex:1;min-width:160px}
+.toolbar select{width:auto;min-width:140px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(225px,1fr));gap:13px}
+.card{background:var(--panel);border:1px solid var(--border);border-radius:13px;overflow:hidden}
+.photo{width:100%;height:165px;object-fit:cover;display:block;background:#302429}
+.no-photo{height:165px;display:grid;place-items:center;color:var(--muted)}
+.cardbody{padding:13px}
+.tag{display:inline-block;background:#482329;color:#ffc0b9;border-radius:20px;padding:5px 9px;font-size:11px;margin-bottom:8px}
+.cardtitle{font-weight:800;font-size:17px;overflow-wrap:anywhere;margin-bottom:9px}
+.detail{font-size:12px;color:var(--muted);margin:7px 0;overflow-wrap:anywhere;white-space:pre-wrap}
+.detail b{color:var(--text)}
+.prices{display:flex;justify-content:space-between;gap:8px;border-top:1px solid var(--border);padding-top:11px;margin-top:12px;font-size:12px}
+.prices b{color:var(--gold)}
+.actions{display:flex;gap:6px;flex-wrap:wrap;padding:0 13px 13px}
+.small{font-size:11px;padding:8px 9px;border-radius:8px;border:1px solid var(--border);background:var(--panel2);color:var(--text)}
+.empty{padding:30px;text-align:center;border:1px dashed var(--border);border-radius:10px;color:var(--muted)}
+.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.field label{display:block;color:var(--muted);font-size:12px;margin-bottom:6px}
+.field{min-width:0}
+.full{grid-column:1/-1}
+textarea{min-height:85px;resize:vertical}
+.preview{width:130px;height:100px;object-fit:cover;display:none;border-radius:9px;margin-top:8px}
+.note{font-size:11px;line-height:1.6;color:var(--muted)}
+hr{border:0;border-top:1px solid var(--border);margin:17px 0}
+.status{padding:11px;border:1px solid #6d5428;background:#332817;border-radius:9px;color:#ffe1a1;font-size:12px;margin-bottom:14px}
+footer{text-align:center;color:var(--muted);font-size:11px;padding:18px}
+.badgeCount{display:inline-grid;place-items:center;background:var(--red);color:white;border-radius:20px;min-width:19px;height:19px;padding:0 5px;font-size:10px;margin-left:4px}
+.notification{padding:13px;background:var(--panel);border:1px solid var(--border);border-radius:11px;margin-bottom:9px}
+.notification.unread{border-left:4px solid var(--gold)}
+.notification p{margin:6px 0;color:var(--muted);font-size:12px}
+.notification small{color:var(--muted)}
+.settingRow{display:flex;justify-content:space-between;align-items:center;gap:15px;padding:12px 0;border-bottom:1px solid var(--border)}
+.settingRow:last-child{border-bottom:0}
+.settingRow label{font-size:13px;flex:1}
+.settingRow select{max-width:180px}
+.settingRow input[type=checkbox]{width:20px;height:20px;accent-color:var(--red)}
+@media(max-width:650px){
+.formgrid{grid-template-columns:1fr}
+.full{grid-column:auto}
+.app{padding:11px}
+.section{padding:13px}
+.stat strong{font-size:18px}
+.settingRow{align-items:flex-start;flex-wrap:wrap}
+.settingRow select{max-width:100%;width:100%}
+}
+</style>
+</head>
+
+<body>
+<div class="app">
+
+<header>
+ <div class="brand">
+  <img class="logo" src="./assets/zixo-art.jpg" alt="ZIXO">
+  <div><h1>ZIXO ADMIN</h1><div class="sub" data-t="subtitle">ACCOUNT MANAGEMENT</div></div>
+ </div>
+ <div class="header-actions">
+  <button class="btn" id="installBtn" hidden data-t="install">Install App</button>
+  <button class="btn" id="languageBtn">සිංහල</button>
+ </div>
+</header>
+
+<div id="updateNotice" class="status hidden">
+ <span data-t="updateAvailable">A new version is available.</span>
+ <button class="btn gold" id="updateBtn" data-t="updateNow">Update now</button>
+</div>
+
+<section class="dashboard">
+ <div class="stat"><small data-t="available">Available Accounts</small><strong id="availableCount">0</strong></div>
+ <div class="stat"><small data-t="sold">Sold Accounts</small><strong id="soldCount">0</strong></div>
+ <div class="stat"><small data-t="sales">Total Sales</small><strong id="totalSales">Rs. 0</strong></div>
+ <div class="stat"><small data-t="profit">Total Profit</small><strong id="totalProfit">Rs. 0</strong></div>
+ <div class="stat"><small data-t="outstanding">Outstanding Payments</small><strong id="outstanding">Rs. 0</strong></div>
+</section>
+
+<nav>
+ <button class="navbtn active" data-page="availablePage" data-t="available">Available Accounts</button>
+ <button class="navbtn" data-page="soldPage" data-t="sold">Sold Accounts</button>
+ <button class="navbtn" data-page="addPage" data-t="add">+ Add Account</button>
+ <button class="navbtn" data-page="notificationsPage" data-t="notifications">Notifications <span id="unreadCount" class="badgeCount">0</span></button>
+ <button class="navbtn" data-page="backupPage" data-t="backup">Backup</button>
+</nav>
+
+<section class="section" id="availablePage">
+ <div class="heading"><h2 data-t="available">Available Accounts</h2>
+ <button class="btn primary" id="addTop" data-t="add">+ Add Account</button></div>
+ <div class="toolbar">
+  <input id="availableSearch" data-placeholder="search" placeholder="Search accounts...">
+  <select id="availableFilter">
+   <option value="all" data-t="all">All Platforms</option>
+   <option>Free Fire</option><option>TikTok</option><option>YouTube</option><option>Other</option>
+  </select>
+ </div>
+ <div class="grid" id="availableGrid"></div>
+</section>
+
+<section class="section hidden" id="soldPage">
+ <div class="heading"><h2 data-t="sold">Sold Accounts</h2></div>
+ <div class="toolbar">
+  <input id="soldSearch" data-placeholder="search" placeholder="Search accounts...">
+  <select id="soldFilter">
+   <option value="all" data-t="all">All Platforms</option>
+   <option>Free Fire</option><option>TikTok</option><option>YouTube</option><option>Other</option>
+  </select>
+ </div>
+ <div class="grid" id="soldGrid"></div>
+</section>
+
+<section class="section hidden" id="addPage">
+ <div class="heading"><h2 id="formTitle" data-t="addNew">Add New Account</h2></div>
+ <form id="accountForm">
+  <input type="hidden" id="editId">
+  <div class="formgrid">
+   <div class="field"><label data-t="platform">Platform</label>
+    <select id="platform"><option>Free Fire</option><option>TikTok</option><option>YouTube</option><option>Other</option></select>
+   </div>
+   <div class="field"><label data-t="accountName">Account Name / Label</label>
+    <input id="accountName" required maxlength="70" placeholder="Account 01">
+   </div>
+   <div class="field full"><label data-t="photo">Account Photo</label>
+    <input id="accountPhoto" type="file" accept="image/*">
+    <img id="photoPreview" class="preview" alt="Preview">
+   </div>
+   <div class="field"><label data-t="owner">Previous Owner's Phone</label>
+    <input id="ownerPhone" type="tel">
+   </div>
+   <div class="field"><label data-t="bind">Account Bind</label>
+    <select id="accountBind">
+     <option>Facebook</option><option>Google</option><option>Email</option>
+     <option>Apple</option><option>VK</option><option>Guest</option><option>Other</option>
+     <option>Not specified</option>
+    </select>
+   </div>
+   <div class="field"><label data-t="purchase">Purchase Price (Rs.)</label>
+    <input id="purchasePrice" type="number" min="0" step="0.01" required>
+   </div>
+   <div class="field"><label data-t="selling">Selling Price (Rs.)</label>
+    <input id="sellingPrice" type="number" min="0" step="0.01" required>
+   </div>
+   <div class="field full"><label data-t="notes">Notes</label>
+    <textarea id="notes"></textarea>
+   </div>
+  </div>
+  <div class="header-actions" style="margin-top:14px">
+   <button class="btn primary" type="submit" id="saveBtn" data-t="save">Save Account</button>
+   <button class="btn" type="button" id="cancelBtn" data-t="cancel">Cancel</button>
+  </div>
+ </form>
+</section>
+
+<section class="section hidden" id="notificationsPage">
+ <div class="heading">
+  <h2 data-t="notifications">Notifications</h2>
+  <button class="btn small" id="markAllRead" data-t="markAllRead">Mark all read</button>
+ </div>
+
+ <div class="status" id="notificationPermissionStatus">Browser notifications have not been enabled.</div>
+ <div class="header-actions" style="margin-bottom:15px">
+  <button class="btn gold" id="enableBrowserBtn" data-t="enableBrowser">Enable browser notifications</button>
+ </div>
+
+ <h3 data-t="notificationSettings">Notification settings</h3>
+
+ <div class="settingRow">
+  <label for="remindersEnabled" data-t="remindersEnabled">Enable payment reminders</label>
+  <input type="checkbox" id="remindersEnabled" checked>
+ </div>
+
+ <div class="settingRow">
+  <label for="advanceDays" data-t="advanceDays">Remind before payment is due</label>
+  <select id="advanceDays">
+   <option value="0">Off</option>
+   <option value="1">1 day before</option>
+   <option value="2">2 days before</option>
+   <option value="3">3 days before</option>
+   <option value="7">7 days before</option>
+  </select>
+ </div>
+
+ <div class="settingRow">
+  <label for="dueEnabled" data-t="dueEnabled">Notify on the due date</label>
+  <input type="checkbox" id="dueEnabled" checked>
+ </div>
+
+ <div class="settingRow">
+  <label for="overdueFrequency" data-t="overdueFrequency">Overdue reminders</label>
+  <select id="overdueFrequency">
+   <option value="off">Off</option>
+   <option value="daily">Every day</option>
+   <option value="2days">Every 2 days</option>
+   <option value="weekly">Every 7 days</option>
+  </select>
+ </div>
+
+ <div class="settingRow">
+  <label for="paymentReceivedEnabled" data-t="paymentReceivedEnabled">Notify when a payment is received</label>
+  <input type="checkbox" id="paymentReceivedEnabled" checked>
+ </div>
+
+ <div class="settingRow">
+  <label for="browserEnabled" data-t="browserEnabled">Use browser notifications</label>
+  <input type="checkbox" id="browserEnabled">
+ </div>
+
+ <p class="note" data-t="notificationNote">
+ Notifications are checked when the app is opened or becomes active. Scheduled notifications while the app is completely closed are not guaranteed.
+ </p>
+
+ <hr>
+ <div class="heading">
+  <h3 data-t="notificationHistory">Notification history</h3>
+  <button class="btn small" id="clearNotificationHistory" data-t="clearHistory">Clear history</button>
+ </div>
+ <div id="notificationList"></div>
+</section>
+
+<section class="section hidden" id="backupPage">
+ <div class="heading"><h2 data-t="backupTitle">Backup & Data</h2></div>
+ <p class="note" data-t="backupInfo">Download a backup to keep your account records and photos safe. Backups are stored on your device.</p>
+ <div class="header-actions">
+  <button class="btn gold" id="backupBtn" data-t="downloadBackup">Download Full Backup</button>
+  <button class="btn" id="restoreBtn" data-t="restoreBackup">Restore Backup</button>
+  <button class="btn" id="csvBtn" data-t="csv">Export CSV</button>
+  <input type="file" id="restoreFile" accept=".json,application/json" hidden>
+ </div>
+ <hr>
+ <p class="note" data-t="storageInfo">Your data is stored only in this browser. It does not sync to other devices. Keep regular backups. Do not store passwords, OTPs or recovery codes.</p>
+ <p class="note" id="recordCount">0 records</p>
+</section>
+
+<footer>ZIXO ADMIN • LOCAL ACCOUNT MANAGER</footer>
+</div>
+
+<script>
+"use strict";
+
+const DB_KEY="zixo_admin_accounts_v3";
+const LANG_KEY="zixo_admin_language";
+const SETTINGS_KEY="zixo_admin_notification_settings_v1";
+const HISTORY_KEY="zixo_admin_notification_history_v1";
+
+let accounts=[];
+let currentPhoto="";
+let language=localStorage.getItem(LANG_KEY)||"en";
+let installPrompt=null;
+let waitingWorker=null;
+
+const defaultSettings={
+ remindersEnabled:true,
+ advanceDays:1,
+ dueEnabled:true,
+ overdueFrequency:"daily",
+ paymentReceivedEnabled:true,
+ browserEnabled:false
+};
+
+let notificationSettings=loadSettings();
+let notificationHistory=loadHistory();
+
+function loadSettings(){
+ try{
+  return {...defaultSettings,...JSON.parse(localStorage.getItem(SETTINGS_KEY)||"{}")};
+ }catch{return {...defaultSettings};}
+}
+
+function saveSettings(){
+ localStorage.setItem(SETTINGS_KEY,JSON.stringify(notificationSettings));
+}
+
+function loadHistory(){
+ try{
+  const h=JSON.parse(localStorage.getItem(HISTORY_KEY)||"[]");
+  return Array.isArray(h)?h:[];
+ }catch{return [];}
+}
+
+function saveHistory(){
+ localStorage.setItem(HISTORY_KEY,JSON.stringify(notificationHistory));
+}
+
+const words={
+ en:{
+  subtitle:"ACCOUNT MANAGEMENT",install:"Install App",available:"Available Accounts",
+  sold:"Sold Accounts",sales:"Total Sales",profit:"Total Profit",outstanding:"Outstanding Payments",
+  add:"+ Add Account",backup:"Backup",all:"All Platforms",search:"Search accounts...",
+  addNew:"Add New Account",platform:"Platform",accountName:"Account Name / Label",
+  photo:"Account Photo",owner:"Previous Owner's Phone",bind:"Account Bind",
+  purchase:"Purchase Price (Rs.)",selling:"Selling Price (Rs.)",notes:"Notes",
+  save:"Save Account",update:"Update Account",cancel:"Cancel",
+  backupTitle:"Backup & Data",backupInfo:"Download a backup to keep your account records and photos safe. Backups are stored on your device.",
+  downloadBackup:"Download Full Backup",restoreBackup:"Restore Backup",csv:"Export CSV",
+  storageInfo:"Your data is stored only in this browser. It does not sync to other devices. Keep regular backups. Do not store passwords, OTPs or recovery codes.",
+  updateAvailable:"A new version is available.",updateNow:"Update now",
+  noAvailable:"No available accounts. Add your first account.",
+  noSold:"No sold accounts yet.",noPhoto:"No photo",markSold:"Mark Sold",
+  edit:"Edit",delete:"Delete",recordPayment:"Record payment",history:"Payment history",
+  confirmSold:"Mark this account as sold?",confirmDelete:"Permanently delete this account?",
+  salePrompt:"Enter actual selling price (Rs.):",invalid:"Enter a valid price.",
+  saved:"Account saved.",updated:"Account updated.",soldMessage:"Account moved to Sold Accounts.",
+  restoreConfirm:"Replace current records with this backup?",
+  restored:"Backup restored successfully.",badBackup:"This backup file is invalid.",
+  backupDone:"Backup downloaded.",noRecords:"No records to export.",
+  soldDate:"Sold date",actual:"Actual sale",record:"records",
+  restoreWarning:"Restoring replaces all current account records. Download a backup first.",
+  notifications:"Notifications",markAllRead:"Mark all read",
+  enableBrowser:"Enable browser notifications",notificationSettings:"Notification settings",
+  remindersEnabled:"Enable payment reminders",advanceDays:"Remind before payment is due",
+  dueEnabled:"Notify on the due date",overdueFrequency:"Overdue reminders",
+  paymentReceivedEnabled:"Notify when a payment is received",
+  browserEnabled:"Use browser notifications",
+  notificationNote:"Notifications are checked when the app is opened or becomes active. Scheduled notifications while the app is completely closed are not guaranteed.",
+  notificationHistory:"Notification history",clearHistory:"Clear history",
+  permissionOff:"Browser notifications are not enabled.",
+  permissionOn:"Browser notifications are enabled.",
+  permissionDenied:"Browser notification permission was denied. Change it in your browser site settings.",
+  customer:"Customer",amountPaid:"Amount paid",balance:"Balance due",
+  nextPayment:"Next payment date",paymentDate:"Payment date",
+  enterCustomer:"Enter customer name:",enterReceived:"Amount received now (Rs.):",
+  enterDueDate:"Next payment date (YYYY-MM-DD). Leave blank if not agreed:",
+  paymentAmount:"Enter payment amount (Rs.):",
+  paymentAdded:"Payment recorded.",paymentTooHigh:"Payment cannot exceed the outstanding balance.",
+  noBalance:"This account is already fully paid.",
+  paymentHistoryTitle:"PAYMENT HISTORY",noPayments:"No payments recorded.",
+  paid:"Fully paid",partial:"Partially paid",unpaid:"Unpaid",
+  dueTomorrow:"Payment due soon",dueToday:"Payment due today",
+  overdue:"Payment overdue",receivedNotification:"Payment received",
+  noNotifications:"No notifications yet.",
+  markRead:"Mark read",clearHistoryConfirm:"Clear all notification history?",
+  browserNotSupported:"Browser notifications are not supported here.",
+  paymentReminder:"Payment reminder",dueLabel:"Due date",
+  reminderSaved:"Notification settings saved."
+ },
+ si:{
+  subtitle:"ගිණුම් කළමනාකරණය",install:"App එක Install කරන්න",
+  available:"විකිණීමට ඇති ගිණුම්",sold:"විකුණූ ගිණුම්",
+  sales:"මුළු විකුණුම්",profit:"මුළු ලාභය",outstanding:"ලැබීමට ඇති මුදල්",
+  add:"+ ගිණුමක් එක් කරන්න",backup:"Backup",all:"සියලු වර්ග",
+  search:"ගිණුම් සොයන්න...",addNew:"අලුත් ගිණුමක්",
+  platform:"වර්ගය",accountName:"ගිණුමේ නම",photo:"ගිණුමේ ඡායාරූපය",
+  owner:"කලින් අයිතිකරුගේ දුරකථන අංකය",bind:"ගිණුම සම්බන්ධ ක්‍රමය",
+  purchase:"මිලදී ගත් මිල (රු.)",selling:"විකුණුම් මිල (රු.)",
+  notes:"සටහන්",save:"සුරකින්න",update:"යාවත්කාලීන කරන්න",
+  cancel:"අවලංගු කරන්න",backupTitle:"Backup සහ දත්ත",
+  backupInfo:"ඔබේ ගිණුම් සහ ඡායාරූප සුරක්ෂිත කිරීමට Backup එකක් බාගන්න.",
+  downloadBackup:"සම්පූර්ණ Backup බාගන්න",restoreBackup:"Backup නැවත ලබාගන්න",
+  csv:"CSV Export",storageInfo:"දත්ත මෙම බ්‍රවුසරයේ පමණක් සුරැකේ. වෙනත් උපාංග සමඟ Sync නොවේ. මුරපද, OTP හෝ recovery codes සුරකින්න එපා.",
+  updateAvailable:"නව සංස්කරණයක් තිබේ.",updateNow:"දැන් යාවත්කාලීන කරන්න",
+  noAvailable:"විකිණීමට ගිණුම් නැත.",noSold:"තවම විකුණූ ගිණුම් නැත.",
+  noPhoto:"ඡායාරූපයක් නැත",markSold:"විකුණූ ලෙස සලකුණු කරන්න",
+  edit:"සංස්කරණය",delete:"මකන්න",recordPayment:"ගෙවීමක් සටහන් කරන්න",
+  history:"ගෙවීම් ඉතිහාසය",confirmSold:"මෙම ගිණුම විකුණූ ලෙස සලකුණු කරනවාද?",
+  confirmDelete:"මෙම ගිණුම ස්ථිරවම මකන්නද?",
+  salePrompt:"සැබෑ විකුණුම් මිල (රු.) ඇතුළත් කරන්න:",
+  invalid:"නිවැරදි මිලක් ඇතුළත් කරන්න.",saved:"ගිණුම සුරැකුණා.",
+  updated:"ගිණුම යාවත්කාලීන කළා.",soldMessage:"ගිණුම විකුණූ ගිණුම් වෙත මාරු කළා.",
+  restoreConfirm:"මෙම Backup එකෙන් දැනට ඇති දත්ත ප්‍රතිස්ථාපනය කරන්නද?",
+  restored:"Backup එක නැවත ලබාගත්තා.",badBackup:"Backup ගොනුව වැරදියි.",
+  backupDone:"Backup බාගත කළා.",noRecords:"Export කිරීමට දත්ත නැත.",
+  soldDate:"විකුණූ දිනය",actual:"සැබෑ විකුණුම් මිල",record:"වාර්තා",
+  restoreWarning:"Restore කිරීමෙන් දැනට ඇති දත්ත ප්‍රතිස්ථාපනය වේ. පළමුව Backup එකක් ගන්න.",
+  notifications:"දැනුම්දීම්",markAllRead:"සියල්ල කියවූ ලෙස සලකුණු කරන්න",
+  enableBrowser:"Browser දැනුම්දීම් සක්‍රිය කරන්න",
+  notificationSettings:"දැනුම්දීම් සැකසුම්",
+  remindersEnabled:"ගෙවීම් මතක් කිරීම් සක්‍රිය කරන්න",
+  advanceDays:"ගෙවීම් දිනයට පෙර මතක් කරන්න",
+  dueEnabled:"ගෙවිය යුතු දිනයේ දැනුම් දෙන්න",
+  overdueFrequency:"ප්‍රමාද වූ ගෙවීම් මතක් කිරීම්",
+  paymentReceivedEnabled:"ගෙවීමක් ලැබුණු විට දැනුම් දෙන්න",
+  browserEnabled:"Browser දැනුම්දීම් භාවිතා කරන්න",
+  notificationNote:"App එක විවෘත කරන විට හෝ නැවත සක්‍රිය කරන විට දැනුම්දීම් පරීක්ෂා වේ. App එක සම්පූර්ණයෙන් වසා ඇති විට නියමිත දැනුම්දීම් සහතික කළ නොහැක.",
+  notificationHistory:"දැනුම්දීම් ඉතිහාසය",clearHistory:"ඉතිහාසය මකන්න",
+  permissionOff:"Browser දැනුම්දීම් සක්‍රිය කර නැත.",
+  permissionOn:"Browser දැනුම්දීම් සක්‍රිය කර ඇත.",
+  permissionDenied:"Browser අවසරය ප්‍රතික්ෂේප කර ඇත. Browser site settings බලන්න.",
+  customer:"පාරිභෝගිකයා",amountPaid:"ගෙවා ඇති මුදල",
+  balance:"ලැබීමට ඇති මුදල",nextPayment:"ඊළඟ ගෙවීම් දිනය",
+  paymentDate:"ගෙවූ දිනය",enterCustomer:"පාරිභෝගිකයාගේ නම:",
+  enterReceived:"දැනට ලැබුණු මුදල (රු.):",
+  enterDueDate:"ඊළඟ ගෙවීම් දිනය (YYYY-MM-DD). දිනයක් නැත්නම් හිස්ව තබන්න:",
+  paymentAmount:"ගෙවූ මුදල ඇතුළත් කරන්න (රු.):",
+  paymentAdded:"ගෙවීම සටහන් කළා.",
+  paymentTooHigh:"ගෙවීම ඉතිරි මුදලට වඩා වැඩි විය නොහැක.",
+  noBalance:"සම්පූර්ණ මුදල දැනටමත් ලැබී ඇත.",
+  paymentHistoryTitle:"ගෙවීම් ඉතිහාසය",noPayments:"ගෙවීම් සටහන් නැත.",
+  paid:"සම්පූර්ණයෙන් ගෙවා ඇත",partial:"කොටස් වශයෙන් ගෙවා ඇත",
+  unpaid:"ගෙවා නැත",dueTomorrow:"ගෙවීම ළඟදීම",dueToday:"අද ගෙවිය යුතුයි",
+  overdue:"ගෙවීම ප්‍රමාදයි",receivedNotification:"ගෙවීමක් ලැබුණා",
+  noNotifications:"තවම දැනුම්දීම් නැත.",markRead:"කියවූ ලෙස සලකුණු කරන්න",
+  clearHistoryConfirm:"සියලු දැනුම්දීම් ඉතිහාසය මකන්නද?",
+  browserNotSupported:"මෙහි Browser දැනුම්දීම් සහාය නොදක්වයි.",
+  paymentReminder:"ගෙවීම් මතක් කිරීම",dueLabel:"ගෙවිය යුතු දිනය",
+  reminderSaved:"දැනුම්දීම් සැකසුම් සුරැකුණා."
+ }
+};
+
+function tr(key){return words[language][key]||words.en[key]||key;}
+
+function applyLanguage(){
+ document.documentElement.lang=language==="si"?"si":"en";
+ document.querySelectorAll("[data-t]").forEach(el=>{
+  const key=el.dataset.t;
+  if(words[language][key])el.textContent=tr(key);
+ });
+ document.querySelectorAll("[data-placeholder]").forEach(el=>{
+  el.placeholder=tr(el.dataset.placeholder);
+ });
+ document.getElementById("languageBtn").textContent=language==="en"?"සිංහල":"English";
+ document.getElementById("formTitle").textContent=
+  document.getElementById("editId").value?tr("update"):tr("addNew");
+ document.getElementById("saveBtn").textContent=
+  document.getElementById("editId").value?tr("update"):tr("save");
+ render();
+ renderNotifications();
+}
+
+document.getElementById("languageBtn").onclick=()=>{
+ language=language==="en"?"si":"en";
+ localStorage.setItem(LANG_KEY,language);
+ applyLanguage();
+};
+
+function load(){
+ try{
+  const data=JSON.parse(localStorage.getItem(DB_KEY)||"[]");
+  accounts=Array.isArray(data)?data:[];
+ }catch{accounts=[];}
+
+ // Add safe defaults for records created by older app versions.
+ accounts=accounts.map(a=>({
+  ...a,
+  customerName:a.customerName||"",
+  amountPaid:Number(a.amountPaid??0),
+  payments:Array.isArray(a.payments)?a.payments:[],
+  nextPaymentDate:a.nextPaymentDate||""
+ }));
+
+ updateDashboard();
+ render();
+ checkPaymentNotifications();
+}
+
+function persist(){
+ try{
+  localStorage.setItem(DB_KEY,JSON.stringify(accounts));
+  updateDashboard();
+  render();
+ }catch(e){
+  alert("Browser storage is full. Download a backup and use smaller photos.");
+ }
+}
+
+function money(n){
+ return "Rs. "+Number(n||0).toLocaleString("en-US",{maximumFractionDigits:2});
+}
+
+function balance(a){
+ const price=Number(a.actualSellingPrice??a.sellingPrice??0);
+ return Math.max(0,price-Number(a.amountPaid||0));
+}
+
+function paymentStatus(a){
+ if(balance(a)<=0)return tr("paid");
+ if(Number(a.amountPaid)>0)return tr("partial");
+ return tr("unpaid");
+}
+
+function updateDashboard(){
+ const available=accounts.filter(a=>!a.sold);
+ const sold=accounts.filter(a=>a.sold);
+ const sales=sold.reduce((s,a)=>s+Number(a.actualSellingPrice??a.sellingPrice??0),0);
+ const profit=sold.reduce((s,a)=>s+Number(a.actualSellingPrice??a.sellingPrice??0)-Number(a.purchasePrice||0),0);
+ const due=sold.reduce((s,a)=>s+balance(a),0);
+
+ document.getElementById("availableCount").textContent=available.length;
+ document.getElementById("soldCount").textContent=sold.length;
+ document.getElementById("totalSales").textContent=money(sales);
+ document.getElementById("totalProfit").textContent=money(profit);
+ document.getElementById("outstanding").textContent=money(due);
+ document.getElementById("recordCount").textContent=accounts.length+" "+tr("record");
+}
+
+function showPage(id){
+ document.querySelectorAll(".section").forEach(s=>s.classList.add("hidden"));
+ document.getElementById(id).classList.remove("hidden");
+ document.querySelectorAll(".navbtn").forEach(b=>b.classList.toggle("active",b.dataset.page===id));
+ if(id!=="addPage")render();
+ if(id==="notificationsPage")renderNotifications();
+}
+
+document.querySelectorAll(".navbtn").forEach(b=>b.onclick=()=>showPage(b.dataset.page));
+document.getElementById("addTop").onclick=()=>newForm();
+document.getElementById("cancelBtn").onclick=()=>{resetForm();showPage("availablePage");};
+
+function newForm(){
+ resetForm();
+ showPage("addPage");
+}
+
+function resetForm(){
+ document.getElementById("accountForm").reset();
+ document.getElementById("editId").value="";
+ currentPhoto="";
+ const p=document.getElementById("photoPreview");
+ p.src="";p.style.display="none";
+ document.getElementById("formTitle").textContent=tr("addNew");
+ document.getElementById("saveBtn").textContent=tr("save");
+}
+
+function escapeHTML(v){
+ return String(v??"").replace(/[&<>"']/g,c=>({
+ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+ })[c]);
+}
+
+function compressImage(file){
+ return new Promise((resolve,reject)=>{
+  const reader=new FileReader();
+  reader.onload=()=>{
+   const img=new Image();
+   img.onload=()=>{
+    const max=850;
+    const scale=Math.min(1,max/Math.max(img.width,img.height));
+    const canvas=document.createElement("canvas");
+    canvas.width=Math.round(img.width*scale);
+    canvas.height=Math.round(img.height*scale);
+    canvas.getContext("2d").drawImage(img,0,0,canvas.width,canvas.height);
+    resolve(canvas.toDataURL("image/jpeg",0.72));
+   };
+   img.onerror=reject;
+   img.src=reader.result;
+  };
+  reader.onerror=reject;
+  reader.readAsDataURL(file);
+ });
+}
+
+document.getElementById("accountPhoto").addEventListener("change",async e=>{
+ const file=e.target.files[0];
+ if(!file)return;
+ if(!file.type.startsWith("image/")){alert("Choose an image.");return;}
+ try{
+  currentPhoto=await compressImage(file);
+  const p=document.getElementById("photoPreview");
+  p.src=currentPhoto;p.style.display="block";
+ }catch{alert("Could not read this image.");}
+});
+
+document.getElementById("accountForm").onsubmit=async e=>{
+ e.preventDefault();
+
+ const purchase=Number(document.getElementById("purchasePrice").value);
+ const selling=Number(document.getElementById("sellingPrice").value);
+
+ if(!Number.isFinite(purchase)||!Number.isFinite(selling)||purchase<0||selling<0){
+  alert(tr("invalid"));return;
+ }
+
+ const id=document.getElementById("editId").value;
+ const old=accounts.find(a=>a.id===id);
+ const name=document.getElementById("accountName").value.trim();
+ if(!name)return;
+
+ const account={
+  id:id||crypto.randomUUID(),
+  platform:document.getElementById("platform").value,
+  name,
+  photo:currentPhoto||old?.photo||"",
+  ownerPhone:document.getElementById("ownerPhone").value.trim(),
+  bind:document.getElementById("accountBind").value,
+  purchasePrice:purchase,
+  sellingPrice:selling,
+  notes:document.getElementById("notes").value.trim(),
+  sold:old?.sold||false,
+  soldDate:old?.soldDate||"",
+  actualSellingPrice:old?.actualSellingPrice??null,
+  customerName:old?.customerName||"",
+  amountPaid:Number(old?.amountPaid||0),
+  nextPaymentDate:old?.nextPaymentDate||"",
+  payments:old?.payments||[]
+ };
+
+ if(old){
+  accounts=accounts.map(a=>a.id===id?account:a);
+  alert(tr("updated"));
+ }else{
+  accounts.unshift(account);
+  alert(tr("saved"));
+ }
+
+ persist();
+ resetForm();
+ showPage("availablePage");
+};
+
+function editAccount(id){
+ const a=accounts.find(x=>x.id===id);
+ if(!a)return;
+
+ resetForm();
+ document.getElementById("editId").value=a.id;
+ document.getElementById("platform").value=a.platform;
+ document.getElementById("accountName").value=a.name;
+ document.getElementById("ownerPhone").value=a.ownerPhone||"";
+ document.getElementById("accountBind").value=a.bind||"Not specified";
+ document.getElementById("purchasePrice").value=a.purchasePrice;
+ document.getElementById("sellingPrice").value=a.sellingPrice;
+ document.getElementById("notes").value=a.notes||"";
+ currentPhoto=a.photo||"";
+
+ if(currentPhoto){
+  const p=document.getElementById("photoPreview");
+  p.src=currentPhoto;p.style.display="block";
+ }
+
+ document.getElementById("formTitle").textContent=tr("update");
+ document.getElementById("saveBtn").textContent=tr("update");
+ showPage("addPage");
+}
+
+function markSold(id){
+ const a=accounts.find(x=>x.id===id);
+ if(!a||a.sold)return;
+ if(!confirm(tr("confirmSold")))return;
+
+ const input=prompt(tr("salePrompt"),String(a.sellingPrice));
+ if(input===null)return;
+
+ const price=Number(input);
+ if(!Number.isFinite(price)||price<0){alert(tr("invalid"));return;}
+
+ const customer=prompt(tr("enterCustomer"),"");
+ if(customer===null)return;
+
+ const paidInput=prompt(tr("enterReceived"),String(price));
+ if(paidInput===null)return;
+
+ const paid=Number(paidInput);
+ if(!Number.isFinite(paid)||paid<0||paid>price){
+  alert(tr("invalid"));return;
+ }
+
+ let dueDate="";
+ if(paid<price){
+  dueDate=prompt(tr("enterDueDate"),"");
+  if(dueDate===null)return;
+  if(dueDate&&!/^\d{4}-\d{2}-\d{2}$/.test(dueDate)){
+   alert("Use YYYY-MM-DD for the payment date.");return;
+  }
+ }
+
+ a.sold=true;
+ a.soldDate=localDate();
+ a.actualSellingPrice=price;
+ a.customerName=customer.trim();
+ a.amountPaid=paid;
+ a.nextPaymentDate=dueDate;
+ a.payments=[];
+
+ if(paid>0){
+  a.payments.push({
+   amount:paid,
+   date:localDate(),
+   note:"Initial payment"
+  });
+ }
+
+ persist();
+ alert(tr("soldMessage"));
+ checkPaymentNotifications();
+}
+
+function addPayment(id){
+ const a=accounts.find(x=>x.id===id);
+ if(!a||!a.sold)return;
+
+ const left=balance(a);
+ if(left<=0){alert(tr("noBalance"));return;}
+
+ const value=prompt(tr("paymentAmount"),String(left));
+ if(value===null)return;
+
+ const amount=Number(value);
+ if(!Number.isFinite(amount)||amount<=0){alert(tr("invalid"));return;}
+ if(amount>left){alert(tr("paymentTooHigh"));return;}
+
+ const date=prompt(tr("paymentDate")+" (YYYY-MM-DD)",localDate());
+ if(date===null)return;
+ if(!/^\d{4}-\d{2}-\d{2}$/.test(date)){
+  alert("Use YYYY-MM-DD.");return;
+ }
+
+ a.amountPaid=Number(a.amountPaid||0)+amount;
+ a.payments=a.payments||[];
+ a.payments.push({amount,date,note:"Installment"});
+
+ if(balance(a)>0){
+  const next=prompt(tr("enterDueDate"),a.nextPaymentDate||"");
+  if(next!==null){
+   if(!next||/^\d{4}-\d{2}-\d{2}$/.test(next)){
+    a.nextPaymentDate=next;
+   }
+  }
+ }else{
+  a.nextPaymentDate="";
+ }
+
+ persist();
+
+ if(notificationSettings.paymentReceivedEnabled){
+  addNotification(
+   "payment",
+   tr("receivedNotification")+": "+a.name,
+   money(amount)+" received from "+(a.customerName||"customer"),
+   a.id
+  );
+ }
+
+ alert(tr("paymentAdded"));
+}
+
+function paymentHistory(id){
+ const a=accounts.find(x=>x.id===id);
+ if(!a)return;
+
+ const lines=(a.payments||[]).map(p=>
+  `${p.date||"-"} — ${money(p.amount)} (${p.note||"Payment"})`
+ ).join("\n");
+
+ alert(
+  `${a.name}\n${tr("customer")}: ${a.customerName||"-"}\n`+
+  `${tr("selling")}: ${money(a.actualSellingPrice??a.sellingPrice)}\n`+
+  `${tr("amountPaid")}: ${money(a.amountPaid)}\n`+
+  `${tr("balance")}: ${money(balance(a))}\n\n`+
+  `${tr("paymentHistoryTitle")}\n${lines||tr("noPayments")}`
+ );
+}
+
+function deleteAccount(id){
+ if(!confirm(tr("confirmDelete")))return;
+ accounts=accounts.filter(a=>a.id!==id);
+ persist();
+}
+
+function card(a){
+ const photo=a.photo
+ ?`<img class="photo" src="${a.photo}" alt="Account photo">`
+ :`<div class="no-photo">${tr("noPhoto")}</div>`;
+
+ const phone=a.ownerPhone
+ ?`<div class="detail"><b>${tr("owner")}:</b> ${escapeHTML(a.ownerPhone)}</div>`:"";
+
+ const notes=a.notes
+ ?`<div class="detail"><b>${tr("notes")}:</b> ${escapeHTML(a.notes)}</div>`:"";
+
+ const soldDate=a.sold
+ ?`<div class="detail"><b>${tr("soldDate")}:</b> ${escapeHTML(a.soldDate||"-")}</div>`:"";
+
+ const customer=a.sold
+ ?`<div class="detail"><b>${tr("customer")}:</b> ${escapeHTML(a.customerName||"-")}</div>`:"";
+
+ const paymentInfo=a.sold
+ ?`<div class="detail"><b>${tr("amountPaid")}:</b> <span class="green">${money(a.amountPaid)}</span></div>
+   <div class="detail"><b>${tr("balance")}:</b> <span class="${balance(a)>0?'redText':'green'}">${money(balance(a))}</span></div>
+   ${balance(a)>0&&a.nextPaymentDate?`<div class="detail"><b>${tr("nextPayment")}:</b> ${escapeHTML(a.nextPaymentDate)}</div>`:""}
+   <div class="detail"><b>${tr("status")}:</b> ${paymentStatus(a)}</div>`:"";
+
+ const sale=a.actualSellingPrice??a.sellingPrice;
+
+ return `<article class="card">
+  ${photo}
+  <div class="cardbody">
+   <span class="tag">${escapeHTML(a.platform)}</span>
+   <div class="cardtitle">${escapeHTML(a.name)}</div>
+   ${phone}${customer}
+   <div class="detail"><b>${tr("bind")}:</b> ${escapeHTML(a.bind||"-")}</div>
+   ${notes}${soldDate}${paymentInfo}
+   <div class="prices">
+    <span>${tr("purchase")}: <b>${money(a.purchasePrice)}</b></span>
+    <span>${tr("selling")}: <b>${money(sale)}</b></span>
+   </div>
+  </div>
+  <div class="actions">
+   ${!a.sold?`<button class="small green" data-action="sell" data-id="${a.id}">${tr("markSold")}</button>`:""}
+   ${a.sold&&balance(a)>0?`<button class="small green" data-action="payment" data-id="${a.id}">${tr("recordPayment")}</button>`:""}
+   ${a.sold?`<button class="small" data-action="history" data-id="${a.id}">${tr("history")}</button>`:""}
+   <button class="small" data-action="edit" data-id="${a.id}">${tr("edit")}</button>
+   <button class="small" data-action="delete" data-id="${a.id}">${tr("delete")}</button>
+  </div>
+ </article>`;
+}
+
+function render(){
+ const available=accounts.filter(a=>!a.sold);
+ const sold=accounts.filter(a=>a.sold);
+
+ const as=document.getElementById("availableSearch").value.toLowerCase();
+ const ss=document.getElementById("soldSearch").value.toLowerCase();
+ const af=document.getElementById("availableFilter").value;
+ const sf=document.getElementById("soldFilter").value;
+
+ const filter=(list,search,platform)=>list.filter(a=>
+  (platform==="all"||a.platform===platform)&&
+  `${a.name} ${a.platform} ${a.ownerPhone} ${a.notes} ${a.customerName||""}`.toLowerCase().includes(search)
+ );
+
+ const av=filter(available,as,af);
+ const sv=filter(sold,ss,sf);
+
+ document.getElementById("availableGrid").innerHTML=
+  av.length?av.map(card).join(""):`<div class="empty">${tr("noAvailable")}</div>`;
+
+ document.getElementById("soldGrid").innerHTML=
+  sv.length?sv.map(card).join(""):`<div class="empty">${tr("noSold")}</div>`;
+}
+
+["availableSearch","soldSearch","availableFilter","soldFilter"].forEach(id=>{
+ document.getElementById(id).addEventListener("input",render);
+ document.getElementById(id).addEventListener("change",render);
+});
+
+document.addEventListener("click",e=>{
+ const b=e.target.closest("[data-action]");
+ if(!b)return;
+ const id=b.dataset.id;
+ if(b.dataset.action==="sell")markSold(id);
+ if(b.dataset.action==="edit")editAccount(id);
+ if(b.dataset.action==="delete")deleteAccount(id);
+ if(b.dataset.action==="payment")addPayment(id);
+ if(b.dataset.action==="history")paymentHistory(id);
+});
+
+/* DATE HELPERS */
+function localDate(){
+ const d=new Date();
+ return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+}
+
+function daysBetween(from,to){
+ const a=new Date(from+"T12:00:00");
+ const b=new Date(to+"T12:00:00");
+ return Math.round((b-a)/86400000);
+}
+
+/* NOTIFICATION SYSTEM */
+function addNotification(type,title,message,accountId){
+ const today=localDate();
+ const key=`${accountId||"general"}|${type}|${today}`;
+
+ if(notificationHistory.some(n=>n.key===key))return;
+
+ const item={
+  id:crypto.randomUUID(),
+  key,type,title,message,
+  accountId:accountId||"",
+  date:new Date().toISOString(),
+  read:false
+ };
+
+ notificationHistory.unshift(item);
+ notificationHistory=notificationHistory.slice(0,200);
+ saveHistory();
+
+ if(notificationSettings.browserEnabled&&
+    "Notification" in window&&
+    Notification.permission==="granted"){
+  try{
+   new Notification(title,{body:message,icon:"./icon.svg"});
+  }catch(e){console.log("Notification unavailable",e);}
+ }
+
+ renderNotifications();
+}
+
+function checkPaymentNotifications(){
+ if(!notificationSettings.remindersEnabled)return;
+
+ const today=localDate();
+
+ accounts.filter(a=>a.sold&&balance(a)>0&&a.nextPaymentDate).forEach(a=>{
+  const days=daysBetween(today,a.nextPaymentDate);
+
+  if(notificationSettings.advanceDays>0&&days===Number(notificationSettings.advanceDays)){
+   addNotification(
+    "advance",
+    tr("dueTomorrow")+": "+a.name,
+    `${a.customerName||"Customer"} • ${money(balance(a))} • ${tr("dueLabel")}: ${a.nextPaymentDate}`,
+    a.id
+   );
+  }
+
+  if(notificationSettings.dueEnabled&&days===0){
+   addNotification(
+    "due",
+    tr("dueToday")+": "+a.name,
+    `${a.customerName||"Customer"} • ${money(balance(a))}`,
+    a.id
+   );
+  }
+
+  if(days<0){
+   const overdueDays=Math.abs(days);
+   const frequency=notificationSettings.overdueFrequency;
+
+   let notify=false;
+   if(frequency==="daily")notify=true;
+   if(frequency==="2days"&&overdueDays%2===0)notify=true;
+   if(frequency==="weekly"&&overdueDays%7===0)notify=true;
+
+   if(notify){
+    addNotification(
+     "overdue",
+     tr("overdue")+": "+a.name,
+     `${a.customerName||"Customer"} • ${money(balance(a))} • ${a.nextPaymentDate}`,
+     a.id
+    );
+   }
+  }
+ });
+}
+
+function renderNotifications(){
+ const list=document.getElementById("notificationList");
+ if(!list)return;
+
+ const unread=notificationHistory.filter(n=>!n.read).length;
+ document.getElementById("unreadCount").textContent=unread;
+
+ const status=document.getElementById("notificationPermissionStatus");
+ if(!("Notification" in window)){
+  status.textContent=tr("browserNotSupported");
+ }else if(Notification.permission==="granted"){
+  status.textContent=tr("permissionOn");
+ }else if(Notification.permission==="denied"){
+  status.textContent=tr("permissionDenied");
+ }else{
+  status.textContent=tr("permissionOff");
+ }
+
+ list.innerHTML=notificationHistory.length
+ ?notificationHistory.map(n=>`
+  <div class="notification ${n.read?"":"unread"}">
+   <b>${escapeHTML(n.title)}</b>
+   <p>${escapeHTML(n.message)}</p>
+   <small>${new Date(n.date).toLocaleString()}</small>
+   ${!n.read?`<div style="margin-top:8px"><button class="small" data-read="${n.id}">${tr("markRead")}</button></div>`:""}
+  </div>
+ `).join("")
+ :`<div class="empty">${tr("noNotifications")}</div>`;
+}
+
+document.getElementById("notificationList").addEventListener("click",e=>{
+ const b=e.target.closest("[data-read]");
+ if(!b)return;
+ const item=notificationHistory.find(n=>n.id===b.dataset.read);
+ if(item)item.read=true;
+ saveHistory();
+ renderNotifications();
+});
+
+document.getElementById("markAllRead").onclick=()=>{
+ notificationHistory.forEach(n=>n.read=true);
+ saveHistory();
+ renderNotifications();
+};
+
+document.getElementById("clearNotificationHistory").onclick=()=>{
+ if(!confirm(tr("clearHistoryConfirm")))return;
+ notificationHistory=[];
+ saveHistory();
+ renderNotifications();
+};
+
+function readSettingsFromUI(){
+ notificationSettings={
+  remindersEnabled:document.getElementById("remindersEnabled").checked,
+  advanceDays:Number(document.getElementById("advanceDays").value),
+  dueEnabled:document.getElementById("dueEnabled").checked,
+  overdueFrequency:document.getElementById("overdueFrequency").value,
+  paymentReceivedEnabled:document.getElementById("paymentReceivedEnabled").checked,
+  browserEnabled:document.getElementById("browserEnabled").checked
+ };
+ saveSettings();
+ checkPaymentNotifications();
+ renderNotifications();
+}
+
+function showSettingsInUI(){
+ document.getElementById("remindersEnabled").checked=notificationSettings.remindersEnabled;
+ document.getElementById("advanceDays").value=String(notificationSettings.advanceDays);
+ document.getElementById("dueEnabled").checked=notificationSettings.dueEnabled;
+ document.getElementById("overdueFrequency").value=notificationSettings.overdueFrequency;
+ document.getElementById("paymentReceivedEnabled").checked=notificationSettings.paymentReceivedEnabled;
+ document.getElementById("browserEnabled").checked=notificationSettings.browserEnabled;
+}
+
+[
+ "remindersEnabled","advanceDays","dueEnabled",
+ "overdueFrequency","paymentReceivedEnabled","browserEnabled"
+].forEach(id=>{
+ document.getElementById(id).addEventListener("change",readSettingsFromUI);
+});
+
+document.getElementById("enableBrowserBtn").onclick=async()=>{
+ if(!("Notification" in window)){
+  alert(tr("browserNotSupported"));return;
+ }
+
+ const permission=await Notification.requestPermission();
+ if(permission==="granted"){
+  notificationSettings.browserEnabled=true;
+  saveSettings();
+  showSettingsInUI();
+  renderNotifications();
+  new Notification("ZIXO ADMIN",{body:"Browser notifications enabled.",icon:"./icon.svg"});
+ }else{
+  renderNotifications();
+ }
+};
+
+/* FULL BACKUP: accounts, photos, notification settings and history */
+document.getElementById("backupBtn").onclick=()=>{
+ const backup={
+  app:"ZIXO ADMIN",
+  formatVersion:2,
+  createdAt:new Date().toISOString(),
+  accounts,
+  notificationSettings,
+  notificationHistory
+ };
+
+ downloadFile(
+  "zixo-admin-backup-"+dateStamp()+".json",
+  JSON.stringify(backup,null,2),
+  "application/json"
+ );
+};
+
+document.getElementById("restoreBtn").onclick=()=>{
+ alert(tr("restoreWarning"));
+ document.getElementById("restoreFile").click();
+};
+
+document.getElementById("restoreFile").onchange=async e=>{
+ const file=e.target.files[0];
+ if(!file)return;
+
+ try{
+  const data=JSON.parse(await file.text());
+  if(!data||data.app!=="ZIXO ADMIN"||!Array.isArray(data.accounts))throw new Error("bad");
+  if(!confirm(tr("restoreConfirm")))return;
+
+  const valid=data.accounts.every(a=>a&&typeof a.id==="string"&&typeof a.name==="string");
+  if(!valid)throw new Error("bad");
+
+  accounts=data.accounts.map(a=>({
+   ...a,
+   customerName:a.customerName||"",
+   amountPaid:Number(a.amountPaid||0),
+   payments:Array.isArray(a.payments)?a.payments:[],
+   nextPaymentDate:a.nextPaymentDate||""
+  }));
+
+  if(data.notificationSettings){
+   notificationSettings={...defaultSettings,...data.notificationSettings};
+   saveSettings();
+   showSettingsInUI();
+  }
+
+  if(Array.isArray(data.notificationHistory)){
+   notificationHistory=data.notificationHistory;
+   saveHistory();
+  }
+
+  persist();
+  renderNotifications();
+  alert(tr("restored"));
+ }catch{
+  alert(tr("badBackup"));
+ }finally{
+  e.target.value="";
+ }
+};
+
+function dateStamp(){return localDate();}
+
+function downloadFile(name,content,type){
+ const blob=new Blob([content],{type});
+ const url=URL.createObjectURL(blob);
+ const a=document.createElement("a");
+ a.href=url;a.download=name;
+ document.body.appendChild(a);
+ a.click();a.remove();
+ setTimeout(()=>URL.revokeObjectURL(url),1500);
+}
+
+document.getElementById("csvBtn").onclick=()=>{
+ if(!accounts.length){alert(tr("noRecords"));return;}
+
+ const columns=[
+  "Platform","Account Name","Previous Owner Phone","Bind",
+  "Purchase Price","Expected Selling Price","Sold","Actual Sale Price",
+  "Sold Date","Customer","Amount Paid","Balance Due","Next Payment Date","Notes"
+ ];
+
+ const rows=accounts.map(a=>[
+  a.platform,a.name,a.ownerPhone,a.bind,a.purchasePrice,a.sellingPrice,
+  a.sold?"Yes":"No",a.actualSellingPrice??"",a.soldDate,
+  a.customerName||"",a.amountPaid||0,a.sold?balance(a):"",
+  a.nextPaymentDate||"",a.notes
+ ]);
+
+ const csv=[columns,...rows].map(row=>
+  row.map(v=>'"'+String(v??"").replace(/"/g,'""')+'"').join(",")
+ ).join("\r\n");
+
+ downloadFile(
+  "zixo-accounts-"+dateStamp()+".csv",
+  "\uFEFF"+csv,
+  "text/csv;charset=utf-8"
+ );
+};
+
+/* PWA INSTALL */
+const installBtn=document.getElementById("installBtn");
+
+window.addEventListener("beforeinstallprompt",e=>{
+ e.preventDefault();
+ installPrompt=e;
+ installBtn.hidden=false;
+});
+
+installBtn.onclick=async()=>{
+ if(!installPrompt){
+  alert("If installation is not offered, open this website in Chrome and use the browser menu > Install app or Add to Home screen.");
+  return;
+ }
+ installPrompt.prompt();
+ await installPrompt.userChoice;
+ installPrompt=null;
+ installBtn.hidden=true;
+};
+
+window.addEventListener("appinstalled",()=>{
+ installBtn.hidden=true;
+});
+
+/* SERVICE WORKER UPDATE HANDLING */
+if("serviceWorker" in navigator&&location.protocol.startsWith("http")){
+ window.addEventListener("load",async()=>{
+  try{
+   const registration=await navigator.serviceWorker.register("./sw.js",{updateViaCache:"none"});
+   await registration.update();
+
+   if(registration.waiting){
+    waitingWorker=registration.waiting;
+    document.getElementById("updateNotice").classList.remove("hidden");
+   }
+
+   registration.addEventListener("updatefound",()=>{
+    const worker=registration.installing;
+    if(!worker)return;
+
+    worker.addEventListener("statechange",()=>{
+     if(worker.state==="installed"&&navigator.serviceWorker.controller){
+      waitingWorker=registration.waiting||worker;
+      document.getElementById("updateNotice").classList.remove("hidden");
+     }
+    });
+   });
+
+   document.addEventListener("visibilitychange",()=>{
+    if(!document.hidden){
+     registration.update().catch(()=>{});
+     checkPaymentNotifications();
+    }
+   });
+  }catch(err){
+   console.log("PWA setup unavailable",err);
+  }
+ });
+}
+
+let refreshing=false;
+
+navigator.serviceWorker?.addEventListener("controllerchange",()=>{
+ if(refreshing)return;
+ refreshing=true;
+ window.location.reload();
+});
+
+document.getElementById("updateBtn").onclick=()=>{
+ if(waitingWorker)waitingWorker.postMessage({type:"SKIP_WAITING"});
+ else location.reload();
+};
+
+/* START APP */
+showSettingsInUI();
+load();
+applyLanguage();
+renderNotifications();
+</script>
+</body>
+</html>

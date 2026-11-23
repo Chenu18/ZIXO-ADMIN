@@ -1,0 +1,17 @@
+{
+  "name": "ZIXO ADMIN",
+  "short_name": "ZIXO",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#100d0e",
+  "theme_color": "#100d0e",
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
